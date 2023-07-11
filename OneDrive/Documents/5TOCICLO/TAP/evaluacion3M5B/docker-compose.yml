@@ -1,0 +1,31 @@
+version: "3"
+services:
+  api-spring:
+    image: jhudyt/api-spring:latest
+    networks:
+      - net-cloud
+    container_name: api-spring
+    depends_on:
+      - mongodb_container
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb_container:2023/exa3
+      - SPRING_DATA_MONGODB_USERNAME=mongodbuser
+      - SPRING_DATA_MONGODB_PASSWORD=secret
+      - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
+    ports:
+      - 8082:8080
+
+  mongodb_container:
+    image: mongo:latest
+    networks:
+      - net-cloud
+    container_name: mongodb_container
+    ports:
+      - 2023:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongodbuser
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_DATABASE=exa3
+
+networks:
+  net-cloud:
